@@ -29,6 +29,17 @@ tasks.register("quickChecks") {
     )
 }
 
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("io.kotzilla:cloud-inject-gradle:0.9.4")
+    }
+}
+
 allprojects {
     afterEvaluate {
         extensions.findByType<ComposeExtension>()?.apply {

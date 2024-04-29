@@ -1,3 +1,11 @@
+import java.util.Properties
+
+val localPropertiesFile = File(rootDir, "local.properties")
+val localProperties = Properties()
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.reader())
+}
+
 pluginManagement {
     listOf(repositories, dependencyResolutionManagement.repositories).forEach {
         it.apply {
@@ -28,6 +36,23 @@ pluginManagement {
             when (requested.id.id) {
                 // Appengine plugin doesn't publish the marker
                 "com.google.cloud.tools.appengine" -> useModule("com.google.cloud.tools:appengine-gradle-plugin:${requested.version}")
+            }
+        }
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+//        mavenLocal()
+
+        // Kotzilla Github Repo
+        maven {
+            url = uri("https://maven.pkg.github.com/kotzilla-io/kotzilla-sdk")
+            credentials {
+                username =  localProperties.getProperty("GH_USER")
+                password =  localProperties.getProperty("GH_TOKEN")
             }
         }
     }

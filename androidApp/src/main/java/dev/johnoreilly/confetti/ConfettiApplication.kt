@@ -12,11 +12,17 @@ import dev.johnoreilly.confetti.di.appModule
 import dev.johnoreilly.confetti.di.initKoin
 import dev.johnoreilly.confetti.work.SessionNotificationWorker
 import dev.johnoreilly.confetti.work.setupDailyRefresh
+import io.kotzilla.cloudinject.CloudInjectSDK
+import io.kotzilla.cloudinject.analytics.koin.analyticsLogger
+import io.kotzilla.cloudinject.dev.dev
+import io.kotzilla.cloudinject.dev.logs
+import io.kotzilla.cloudinject.dev.prod
+import io.kotzilla.cloudinject.dev.refreshRate
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.time.measureDuration
 
 class ConfettiApplication : Application() {
 
@@ -42,13 +48,36 @@ class ConfettiApplication : Application() {
             }
         }
 
-        initKoin {
-            androidLogger()
-            androidContext(this@ConfettiApplication)
-            modules(appModule)
-
-            workManagerFactory()
+        val ciStart = measureDuration {
+            //        CloudInjectSDK.setup(this@ConfettiApplication)
+            CloudInjectSDK.dev(this@ConfettiApplication)
+            {
+    //            dev("192.168.1.141")
+    //            staging()
+                prod()
+                refreshRate(15_000)
+                logs()
+            }
         }
+
+        CloudInjectSDK.log("Cloud-Inject start - $ciStart ms")
+
+        val koinStart = measureDuration {
+            initKoin {
+                analyticsLogger()
+//            androidLogger()
+                androidContext(this@ConfettiApplication)
+                modules(appModule)
+
+                workManagerFactory()
+            }
+        }
+        CloudInjectSDK.log("Koin start - $koinStart ms")
+        CloudInjectSDK.setProperties(
+            "cloud-inject-version" to "0.9.4",
+            "cloud-inject-start" to "$ciStart",
+            "koin-start" to "$koinStart"
+        )
 
         val workManager = get<WorkManager>()
         setupDailyRefresh(workManager)
