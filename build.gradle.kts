@@ -33,10 +33,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
     }
 
     dependencies {
-        classpath("io.kotzilla:cloud-inject-gradle:0.9.4")
+        classpath("io.kotzilla:cloud-inject-gradle:0.10.0-Beta1")
     }
 }
 

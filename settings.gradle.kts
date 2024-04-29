@@ -45,7 +45,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-//        mavenLocal()
+        mavenLocal()
 
         // Kotzilla Github Repo
         maven {

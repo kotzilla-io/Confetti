@@ -74,7 +74,7 @@ class ConfettiApplication : Application() {
         }
         CloudInjectSDK.log("Koin start - $koinStart ms")
         CloudInjectSDK.setProperties(
-            "cloud-inject-version" to "0.9.4",
+            "cloud-inject-version" to "0.10.0-Beta1",
             "cloud-inject-start" to "$ciStart",
             "koin-start" to "$koinStart"
         )
