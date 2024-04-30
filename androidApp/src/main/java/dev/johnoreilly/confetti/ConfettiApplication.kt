@@ -51,7 +51,7 @@ class ConfettiApplication : Application() {
         }
 
 //        CloudInjectSDK.setup(this@ConfettiApplication)
-        val isProd = true
+        val isProd = false
         val ciStart = measureDuration {
             CloudInjectSDK.dev(this@ConfettiApplication)
             {
