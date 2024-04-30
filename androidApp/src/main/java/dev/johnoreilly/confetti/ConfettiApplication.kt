@@ -1,6 +1,7 @@
 package dev.johnoreilly.confetti
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.work.WorkManager
@@ -18,6 +19,7 @@ import io.kotzilla.cloudinject.dev.dev
 import io.kotzilla.cloudinject.dev.logs
 import io.kotzilla.cloudinject.dev.prod
 import io.kotzilla.cloudinject.dev.refreshRate
+import io.kotzilla.cloudinject.dev.staging
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
@@ -48,19 +50,23 @@ class ConfettiApplication : Application() {
             }
         }
 
+        //        CloudInjectSDK.setup(this@ConfettiApplication)
+        val isProd = true
         val ciStart = measureDuration {
-            //        CloudInjectSDK.setup(this@ConfettiApplication)
             CloudInjectSDK.dev(this@ConfettiApplication)
             {
-    //            dev("192.168.1.141")
-    //            staging()
-                prod()
+                // dev("192.168.1.141")
+                if (isProd){
+                    prod()
+                } else {
+                    staging()
+                }
                 refreshRate(15_000)
                 logs()
             }
         }
-
         CloudInjectSDK.log("Cloud-Inject start - $ciStart ms")
+        Toast.makeText(this,"Cloud-Inject - "+if(isProd) "PROD" else "STAGING", Toast.LENGTH_LONG).show()
 
         val koinStart = measureDuration {
             initKoin {
