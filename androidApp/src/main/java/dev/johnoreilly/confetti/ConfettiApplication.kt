@@ -51,7 +51,7 @@ class ConfettiApplication : Application() {
         }
 
         //        CloudInjectSDK.setup(this@ConfettiApplication)
-        val isProd = true
+        val isProd = false
         val ciStart = measureDuration {
             CloudInjectSDK.dev(this@ConfettiApplication)
             {
@@ -80,7 +80,7 @@ class ConfettiApplication : Application() {
         }
         CloudInjectSDK.log("Koin start - $koinStart ms")
         CloudInjectSDK.setProperties(
-            "cloud-inject-version" to "0.9.4",
+            "cloud-inject-version" to "0.9.5",
             "cloud-inject-start" to "$ciStart",
             "koin-start" to "$koinStart"
         )
