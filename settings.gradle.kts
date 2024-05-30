@@ -49,10 +49,10 @@ dependencyResolutionManagement {
 
         // Kotzilla Github Repo
         maven {
-            url = uri("https://maven.pkg.github.com/kotzilla-io/kotzilla-sdk")
+            url = uri("https://repository.kotzilla.io/repository/Cloud-Inject/")
             credentials {
-                username =  localProperties.getProperty("GH_USER")
-                password =  localProperties.getProperty("GH_TOKEN")
+                username =  localProperties.getProperty("KOTZILLA_USER")
+                password =  localProperties.getProperty("KOTZILLA_PWD")
             }
         }
     }
