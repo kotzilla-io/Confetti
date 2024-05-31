@@ -209,6 +209,6 @@ dependencies {
     testImplementation(libs.koin.test)
     debugImplementation(libs.compose.ui.manifest)
 
-    implementation("io.kotzilla:cloud-inject:0.10.0-Beta2")
-    implementation("io.kotzilla:cloud-inject-dev:0.10.0-Beta2")
+    implementation("io.kotzilla:cloud-inject:0.10.0-Beta3")
+    implementation("io.kotzilla:cloud-inject-dev:0.10.0-Beta3")
 }
