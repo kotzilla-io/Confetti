@@ -47,14 +47,14 @@ dependencyResolutionManagement {
         mavenCentral()
         mavenLocal()
 
-        // Kotzilla Repo
-        maven {
-            url = uri("https://repository.kotzilla.io/repository/Cloud-Inject/")
-            credentials {
-                username =  localProperties.getProperty("KOTZILLA_USER")
-                password =  localProperties.getProperty("KOTZILLA_PWD")
-            }
-        }
+//        // Kotzilla Repo
+//        maven {
+//            url = uri("https://repository.kotzilla.io/repository/Cloud-Inject/")
+//            credentials {
+//                username =  localProperties.getProperty("KOTZILLA_USER")
+//                password =  localProperties.getProperty("KOTZILLA_PWD")
+//            }
+//        }
     }
 }
 

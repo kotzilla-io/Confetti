@@ -13,8 +13,10 @@ import dev.johnoreilly.confetti.di.appModule
 import dev.johnoreilly.confetti.di.initKoin
 import dev.johnoreilly.confetti.work.SessionNotificationWorker
 import dev.johnoreilly.confetti.work.setupDailyRefresh
+import io.kotzilla.cloudinject.CloudInjectCoreSDK
 import io.kotzilla.cloudinject.CloudInjectSDK
 import io.kotzilla.cloudinject.analytics.koin.analyticsLogger
+import io.kotzilla.cloudinject.config.Environment
 import io.kotzilla.cloudinject.dev.dev
 import io.kotzilla.cloudinject.dev.logs
 import io.kotzilla.cloudinject.dev.prod
@@ -50,7 +52,22 @@ class ConfettiApplication : Application() {
             }
         }
 
+
+        // Default Setup
 //        CloudInjectSDK.setup(this@ConfettiApplication)
+
+//        // KMP Setup
+//        CloudInjectCoreSDK.setupAndConnect(
+//            appKey = "dev.johnoreilly.confetti",
+//            versionName = "1.0-iOS",
+//            environment = Environment.Staging,
+////            environment = Environment.Dev("192.168.1.76")
+//        ).getCurrentService().config.apply {
+//            useDebugLogs = true
+//            refreshRate = 15_000
+//        }
+
+        // Dev Setup
         val isProd = false
         val ciStart = measureDuration {
             CloudInjectSDK.dev(this@ConfettiApplication)
@@ -71,7 +88,6 @@ class ConfettiApplication : Application() {
         val koinStart = measureDuration {
             initKoin {
                 analyticsLogger()
-//            androidLogger()
                 androidContext(this@ConfettiApplication)
                 modules(appModule)
 

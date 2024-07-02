@@ -14,7 +14,7 @@ class AppDelegate : NSObject, UIApplicationDelegate {
     let root: AppComponent
     
     override init() {
-        KoinKt.doInitKoin()
+        KoiniOSKt.doInitKoinIOS()
 
         root = DefaultAppComponent(
             componentContext: DefaultComponentContext(lifecycle: ApplicationLifecycle()),

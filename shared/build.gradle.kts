@@ -91,6 +91,8 @@ kotlin {
                 implementation(libs.stately.common)
 
                 api(libs.generativeai)
+
+                api("io.kotzilla:cloud-inject:0.10.0-Beta5")
             }
         }
         commonTest {
