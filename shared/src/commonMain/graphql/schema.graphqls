@@ -1,407 +1,61 @@
-type BookmarkConnection {
-  nodes: [Session!]!
-}
-
-type Bookmarks {
-  id: String!
-
-  sessionIds: [String!]!
-}
-
-type Conference {
-  days: [LocalDate!]!
-
-  id: String!
-
-  name: String!
-
-  themeColor: String
-
-  timezone: String!
-}
-
-enum ConferenceField {
-  DAYS
-}
-
-input ConferenceOrderByInput {
-  direction: OrderByDirection!
-
-  field: ConferenceField!
-}
-
-"""
-A type representing a formatted kotlinx.datetime.Instant
-"""
-scalar Instant
-
-type Link {
-  type: LinkType!
-
-  url: String!
-}
-
-enum LinkType {
-  YouTube
-
-  Audio
-
-  AudioUncompressed
-
-  Other
-}
-
-"""
-A type representing a formatted kotlinx.datetime.LocalDate
-"""
-scalar LocalDate
-
-"""
-A type representing a formatted kotlinx.datetime.LocalDateTime
-"""
-scalar LocalDateTime
-
-input LocalDateTimeFilterInput {
-  after: LocalDateTime
-
-  before: LocalDateTime
-}
-
-type Mutation {
-  addBookmark(sessionId: String!): Bookmarks!
-
-  deleteAccount: Boolean!
-
-  removeBookmark(sessionId: String!): Bookmarks!
-}
-
-enum OrderByDirection {
-  ASCENDING
-
-  DESCENDING
-}
-
-type PageInfo {
-  endCursor: String
-}
-
-type Partner {
-  logoUrl(dark: Boolean): String!
-
-  logoUrlDark: String
-
-  name: String!
-
-  url: String!
-}
-
-type PartnerGroup {
-  partners: [Partner!]!
-
-  title: String!
-}
-
-type Query {
-  bookmarkConnection: BookmarkConnection
-
-  bookmarks: Bookmarks @deprecated(reason: "Use bookmarkConnection instead")
-
-  conferences(orderBy: ConferenceOrderByInput): [Conference!]!
-
-  config: Conference!
-
-  partnerGroups: [PartnerGroup!]!
-
-  rooms: [Room!]!
-
-  session(id: String!): Session!
-
-  sessions(first: Int, after: String, filter: SessionFilterInput, orderBy: SessionOrderByInput): SessionConnection!
-
-  speaker(id: String!): Speaker!
-
-  speakers: [Speaker!]! @deprecated(reason: "Use speakersPage instead")
-
-  speakersPage(first: Int, after: String): SpeakerConnection!
-
-  venue(id: String!): Venue!
-
-  venues: [Venue!]!
-
-  _service: _Service!
-}
-
-type Room {
-  capacity: Int
-
-  id: String!
-
-  name: String!
-}
-
-type Session {
-  complexity: String
-
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+type __Schema {
   description: String
 
-  endInstant: Instant! @deprecated(reason: "use endsAt instead")
+  types: [__Type!]!
 
-  endsAt: LocalDateTime!
+  queryType: __Type!
 
-  feedbackId: String
+  mutationType: __Type
 
-  id: String!
+  subscriptionType: __Type
 
-  """
-  An [IETF language code](https://en.wikipedia.org/wiki/IETF_language_tag) like en-US
-  """
-  language: String
-
-  links: [Link!]!
-
-  """
-  A shorter version of description for use when real estate is scarce like watches for an example.
-  This field might have the same value as description if a shortDescription is not available
-  """
-  shortDescription: String
-
-  startInstant: Instant! @deprecated(reason: "use startsAt instead")
-
-  startsAt: LocalDateTime!
-
-  tags: [String!]!
-
-  title: String!
-
-  """
-  One of "break", "lunch", "party", "keynote", "talk" or any other conference-specific format
-  """
-  type: String!
-
-  room: Room
-
-  rooms: [Room!]!
-
-  speakers: [Speaker!]!
-}
-
-type SessionConnection {
-  nodes: [Session!]!
-
-  pageInfo: PageInfo!
-}
-
-enum SessionField {
-  STARTS_AT
-}
-
-input SessionFilterInput {
-  endsAt: LocalDateTimeFilterInput
-
-  startsAt: LocalDateTimeFilterInput
-}
-
-input SessionOrderByInput {
-  direction: OrderByDirection!
-
-  field: SessionField!
-}
-
-type Social {
-  icon: String
-
-  link: String! @deprecated(reason: "use url instead, replace with url")
-
-  name: String!
-
-  url: String!
-}
-
-type Speaker {
-  bio: String
-
-  city: String
-
-  company: String
-
-  companyLogoUrl: String
-
-  id: String!
-
-  name: String!
-
-  photoUrl: String
-
-  photoUrlThumbnail: String
-
-  socials: [Social!]!
-
-  tagline: String
-
-  sessions: [Session!]!
-}
-
-type SpeakerConnection {
-  nodes: [Speaker!]!
-
-  pageInfo: PageInfo!
-}
-
-type Venue {
-  address: String
-
-  coordinates: String @deprecated(reason: "use latitude and longitude instead")
-
-  descriptionFr: String! @deprecated(reason: "use description(language: \"fr\") instead")
-
-  floorPlanUrl: String
-
-  id: String!
-
-  imageUrl: String
-
-  latitude: Float
-
-  longitude: Float
-
-  name: String!
-
-  description(language: String): String!
-}
-
-type _Service {
-  sdl: String!
+  directives: [__Directive!]!
 }
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-type __Directive {
-  """
-  The __Directive type represents a Directive that a server supports.
-  """
-  name: String!
+type __Type {
+  kind: __TypeKind!
+
+  name: String
 
   description: String
 
-  isRepeatable: Boolean!
+  fields(includeDeprecated: Boolean = false): [__Field!]
 
-  locations: [__DirectiveLocation!]!
+  interfaces: [__Type!]
 
-  args(includeDeprecated: Boolean = false): [__InputValue!]!
+  possibleTypes: [__Type!]
+
+  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+
+  inputFields(includeDeprecated: Boolean = false): [__InputValue!]
+
+  ofType: __Type
+
+  specifiedByURL: String
 }
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-"""
-An enum describing valid locations where a directive can be placed
-"""
-enum __DirectiveLocation {
-  """
-  Indicates the directive is valid on queries.
-  """
-  QUERY
-
-  """
-  Indicates the directive is valid on mutations.
-  """
-  MUTATION
-
-  """
-  Indicates the directive is valid on subscriptions.
-  """
-  SUBSCRIPTION
-
-  """
-  Indicates the directive is valid on fields.
-  """
-  FIELD
-
-  """
-  Indicates the directive is valid on fragment definitions.
-  """
-  FRAGMENT_DEFINITION
-
-  """
-  Indicates the directive is valid on fragment spreads.
-  """
-  FRAGMENT_SPREAD
-
-  """
-  Indicates the directive is valid on inline fragments.
-  """
-  INLINE_FRAGMENT
-
-  """
-  Indicates the directive is valid on variable definitions.
-  """
-  VARIABLE_DEFINITION
-
-  """
-  Indicates the directive is valid on a schema SDL definition.
-  """
-  SCHEMA
-
-  """
-  Indicates the directive is valid on a scalar SDL definition.
-  """
+enum __TypeKind {
   SCALAR
 
-  """
-  Indicates the directive is valid on an object SDL definition.
-  """
   OBJECT
 
-  """
-  Indicates the directive is valid on a field SDL definition.
-  """
-  FIELD_DEFINITION
-
-  """
-  Indicates the directive is valid on a field argument SDL definition.
-  """
-  ARGUMENT_DEFINITION
-
-  """
-  Indicates the directive is valid on an interface SDL definition.
-  """
   INTERFACE
 
-  """
-  Indicates the directive is valid on an union SDL definition.
-  """
   UNION
 
-  """
-  Indicates the directive is valid on an enum SDL definition.
-  """
   ENUM
 
-  """
-  Indicates the directive is valid on an enum value SDL definition.
-  """
-  ENUM_VALUE
-
-  """
-  Indicates the directive is valid on an input object SDL definition.
-  """
   INPUT_OBJECT
 
-  """
-  Indicates the directive is valid on an input object field SDL definition.
-  """
-  INPUT_FIELD_DEFINITION
-}
+  LIST
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
-type __EnumValue {
-  name: String!
-
-  description: String
-
-  isDeprecated: Boolean!
-
-  deprecationReason: String
+  NON_NULL
 }
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
@@ -431,155 +85,376 @@ type __InputValue {
 
   defaultValue: String
 
-  isDeprecated: Boolean
+  isDeprecated: Boolean!
 
   deprecationReason: String
 }
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-"""
-A GraphQL Introspection defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, the entry points for query, mutation, and subscription operations.
-"""
-type __Schema {
+type __EnumValue {
+  name: String!
+
   description: String
 
-  """
-  A list of all types supported by this server.
-  """
-  types: [__Type!]!
+  isDeprecated: Boolean!
 
-  """
-  The type that query operations will be rooted at.
-  """
-  queryType: __Type!
-
-  """
-  If this server supports mutation, the type that mutation operations will be rooted at.
-  """
-  mutationType: __Type
-
-  """
-  'A list of all directives supported by this server.
-  """
-  directives: [__Directive!]!
-
-  """
-  'If this server support subscription, the type that subscription operations will be rooted at.
-  """
-  subscriptionType: __Type
+  deprecationReason: String
 }
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-type __Type {
-  kind: __TypeKind!
-
-  name: String
+type __Directive {
+  name: String!
 
   description: String
 
-  fields(includeDeprecated: Boolean = false): [__Field!]
+  locations: [__DirectiveLocation!]!
 
-  interfaces: [__Type!]
+  args(includeDeprecated: Boolean = false): [__InputValue!]!
 
-  possibleTypes: [__Type!]
-
-  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
-
-  inputFields(includeDeprecated: Boolean = false): [__InputValue!]
-
-  ofType: __Type
-
-  """
-  This field is considered experimental because it has not yet been ratified in the graphql specification
-  """
-  isOneOf: Boolean
-
-  specifiedByURL: String
-
-  specifiedByUrl: String @deprecated(reason: "This legacy name has been replaced by `specifiedByURL`")
+  isRepeatable: Boolean!
 }
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-"""
-An enum describing what kind of type a given __Type is
-"""
-enum __TypeKind {
-  """
-  Indicates this type is a scalar. 'specifiedByURL' is a valid field
-  """
+enum __DirectiveLocation {
+  QUERY
+
+  MUTATION
+
+  SUBSCRIPTION
+
+  FIELD
+
+  FRAGMENT_DEFINITION
+
+  FRAGMENT_SPREAD
+
+  INLINE_FRAGMENT
+
+  VARIABLE_DEFINITION
+
+  SCHEMA
+
   SCALAR
 
-  """
-  Indicates this type is an object. `fields` and `interfaces` are valid fields.
-  """
   OBJECT
 
-  """
-  Indicates this type is an interface. `fields` and `possibleTypes` are valid fields.
-  """
+  FIELD_DEFINITION
+
+  ARGUMENT_DEFINITION
+
   INTERFACE
 
-  """
-  Indicates this type is a union. `possibleTypes` is a valid field.
-  """
   UNION
 
-  """
-  Indicates this type is an enum. `enumValues` is a valid field.
-  """
   ENUM
 
-  """
-  Indicates this type is an input object. `inputFields` is a valid field.
-  """
+  ENUM_VALUE
+
   INPUT_OBJECT
 
-  """
-  Indicates this type is a list. `ofType` is a valid field.
-  """
-  LIST
+  INPUT_FIELD_DEFINITION
+}
+
+type Query {
+  rooms: [Room!]!
+
+  sessions(first: Int = 10, after: String = null, filter: SessionFilterInput = null, orderBy: SessionOrderByInput = {
+    field: STARTS_AT
+    direction: ASCENDING
+  }
+  ): SessionConnection!
+
+  speakers: [Speaker!]! @deprecated(reason: "No longer supported")
+
+  speakersPage(first: Int = null, after: String = null): SpeakerConnection!
+
+  speaker(id: String!): Speaker!
+
+  venue(id: String!): Venue!
+
+  venues: [Venue!]!
+
+  partnerGroups: [PartnerGroup!]!
+
+  session(id: String!): Session!
+
+  config: Conference!
+
+  bookmarks: Bookmarks @deprecated(reason: "No longer supported")
+
+  bookmarkConnection: BookmarkConnection
+
+  conferences(orderBy: ConferenceOrderByInput = null): [Conference!]!
+}
+
+type Mutation {
+  addBookmark(sessionId: String!): Bookmarks!
+
+  removeBookmark(sessionId: String!): Bookmarks!
 
   """
-  Indicates this type is a non-null. `ofType` is a valid field.
+   Deletes the current user account, requires authentication
   """
-  NON_NULL
+  deleteAccount: Boolean!
+}
+
+type Room {
+  id: String!
+
+  name: String!
+
+  capacity: Int
+}
+
+type SessionConnection {
+  nodes: [Session!]!
+
+  pageInfo: PageInfo!
+}
+
+input SessionFilterInput {
+  startsAt: LocalDateTimeFilterInput = null
+
+  endsAt: LocalDateTimeFilterInput = null
+}
+
+input SessionOrderByInput {
+  field: SessionField!
+
+  direction: OrderByDirection!
+}
+
+type Speaker {
+  id: String!
+
+  name: String!
+
+  bio: String
+
+  tagline: String
+
+  company: String
+
+  companyLogoUrl: String
+
+  city: String
+
+  socials: [Social!]!
+
+  photoUrl: String
+
+  photoUrlThumbnail: String
+
+  sessions: [Session!]!
+}
+
+type SpeakerConnection {
+  nodes: [Speaker!]!
+
+  pageInfo: PageInfo!
+}
+
+type Venue {
+  id: String!
+
+  name: String!
+
+  latitude: Float
+
+  longitude: Float
+
+  address: String
+
+  imageUrl: String
+
+  """
+   the url to an image containing the floor plan
+  """
+  floorPlanUrl: String
+
+  coordinates: String @deprecated(reason: "No longer supported")
+
+  descriptionFr: String! @deprecated(reason: "No longer supported")
+
+  description(language: String = "en"): String!
+}
+
+type PartnerGroup {
+  title: String!
+
+  partners: [Partner!]!
+}
+
+type Session {
+  id: String!
+
+  title: String!
+
+  description: String
+
+  """
+   A shorter version of description for use when real estate is scarce like watches for an example.
+   This field might have the same value as description if a shortDescription is not available.
+  """
+  shortDescription: String
+
+  """
+   An [IETF language code](https://en.wikipedia.org/wiki/IETF_language_tag) like en-US.
+  """
+  language: String
+
+  tags: [String!]!
+
+  startInstant: Instant! @deprecated(reason: "No longer supported")
+
+  endInstant: Instant! @deprecated(reason: "No longer supported")
+
+  startsAt: LocalDateTime!
+
+  endsAt: LocalDateTime!
+
+  complexity: String
+
+  feedbackId: String
+
+  """
+   One of "break", "lunch", "party", "keynote", "talk" or any other conference-specific format.
+  """
+  type: String!
+
+  links: [Link!]!
+
+  speakers: [Speaker!]!
+
+  room: Room
+
+  rooms: [Room!]!
+}
+
+type Conference {
+  id: String!
+
+  name: String!
+
+  timezone: String!
+
+  days: [LocalDate!]!
+
+  themeColor: String
+}
+
+type Bookmarks {
+  sessionIds: [String!]!
+
+  id: String!
+}
+
+type BookmarkConnection {
+  nodes: [Session!]!
+}
+
+input ConferenceOrderByInput {
+  field: ConferenceField!
+
+  direction: OrderByDirection!
+}
+
+type PageInfo {
+  endCursor: String
+}
+
+input LocalDateTimeFilterInput {
+  before: LocalDateTime = null
+
+  after: LocalDateTime = null
+}
+
+enum SessionField {
+  STARTS_AT
+}
+
+enum OrderByDirection {
+  ASCENDING
+
+  DESCENDING
+}
+
+type Social {
+  icon: String
+
+  link: String! @deprecated(reason: "No longer supported")
+
+  name: String!
+
+  url: String!
+}
+
+type Partner {
+  name: String!
+
+  url: String!
+
+  """
+   @param dark returns the logo for use on a dark background or fallbacks to the light mode if none exist
+  """
+  logoUrl(dark: Boolean = false): String!
+}
+
+"""
+ A type representing a formatted kotlinx.datetime.Instant
+"""
+scalar Instant
+
+"""
+ A type representing a formatted kotlinx.datetime.LocalDateTime
+"""
+scalar LocalDateTime
+
+type Link {
+  type: LinkType!
+
+  url: String!
+}
+
+"""
+ A type representing a formatted kotlinx.datetime.LocalDate
+"""
+scalar LocalDate
+
+enum ConferenceField {
+  DAYS
+}
+
+enum LinkType {
+  YouTube
+
+  Audio
+
+  AudioUncompressed
+
+  Other
 }
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-"""
-Directs the executor to include this field or fragment only when the `if` argument is true
-"""
-directive @include ("Included when true." if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+directive @skip (if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-"""
-Directs the executor to skip this field or fragment when the `if` argument is true.
-"""
-directive @skip ("Skipped when true." if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+directive @include (if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-"""
-Marks the field, argument, input field or enum value as deprecated
-"""
-directive @deprecated ("The reason for the deprecation" reason: String = "No longer supported") on FIELD_DEFINITION|ARGUMENT_DEFINITION|ENUM_VALUE|INPUT_FIELD_DEFINITION
+directive @deprecated (reason: String = "No longer supported") on FIELD_DEFINITION|ARGUMENT_DEFINITION|INPUT_FIELD_DEFINITION|ENUM_VALUE
+
+directive @defer (label: String, if: Boolean! = true) on FRAGMENT_SPREAD|INLINE_FRAGMENT
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
-"""
-Exposes a URL that specifies the behaviour of this scalar.
-"""
-directive @specifiedBy ("The URL that specifies the behaviour of this scalar." url: String!) on SCALAR
-
-"""
-Indicates an Input Object is a OneOf Input Object.
-"""
-directive @oneOf on INPUT_OBJECT
+directive @specifiedBy (url: String!) on SCALAR
 
 schema {
   query: Query
